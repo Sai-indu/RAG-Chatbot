@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAG ATM Support ChatBot 🏧</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; overflow: hidden; }
+        
+        /* Ocean Blue Glassy Background with Animation */
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 50%, #00d4ff 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container { 
+            width: 100vw; 
+            height: 100vh; 
+            display: grid; 
+            grid-template-columns: 350px 1fr; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            animation: fadeIn 0.8s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Glassy Sidebar with Animations */
+        .sidebar { 
+            background: linear-gradient(180deg, rgba(0, 147, 233, 0.9) 0%, rgba(30, 60, 114, 0.95) 100%);
+            backdrop-filter: blur(15px);
+            padding: 20px; 
+            color: white; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 2px 0 20px rgba(0, 147, 233, 0.3);
+            animation: slideInLeft 0.6s ease-out;
+        }
+        
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .logo-section { 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            margin-bottom: 15px;
+            animation: bounceIn 1s ease-out;
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.05); }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .logo-icon { 
+            font-size: 40px;
+            animation: float 3s ease-in-out infinite;
+            filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .logo-text h1 { 
+            font-size: 20px; 
+            margin: 0; 
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            animation: slideInRight 0.8s ease-out;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .logo-text p { 
+            font-size: 12px; 
+            margin: 3px 0 0; 
+            opacity: 0.9;
+            animation: slideInRight 0.8s ease-out 0.2s backwards;
+        }
+        
+        .status-box { 
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px; 
+            padding: 8px 12px; 
+            margin-bottom: 10px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            animation: scaleIn 0.6s ease-out 0.3s backwards;
+            transition: all 0.3s ease;
+        }
+        
+        .status-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 212, 255, 0.3);
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        
+        .status-header { display: flex; align-items: center; gap: 10px; }
+        
+        .brain-icon { 
+            font-size: 18px; 
+            filter: drop-shadow(0 0 8px rgba(0, 212, 255, 0.8));
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .status-title { font-weight: 600; font-size: 13px; }
+        .status-text { font-size: 11px; margin-left: 28px; }
+        .rag-details-row { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; }
+        .rag-status-item { display: flex; align-items: center; gap: 6px; }
+        
+        .rag-badge { 
+            display: inline-block; 
+            padding: 3px 8px; 
+            background: rgba(40, 167, 69, 0.9); 
+            color: white; 
+            border-radius: 8px; 
+            font-size: 10.5px; 
+            font-weight: 600;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.4);
+            animation: slideInBadge 0.5s ease-out;
+            transition: all 0.3s ease;
+        }
+        
+        .rag-badge:hover {
+            transform: scale(1.05);
+        }
+        
+        @keyframes slideInBadge {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .rag-badge.disabled { 
+            background: rgba(220, 53, 69, 0.9);
+            box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
+        }
+        
+        .quick-issues { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
+        
+        .quick-issues h3 { 
+            font-size: 15px; 
+            margin: 0 0 10px; 
+            font-weight: 700;
+            animation: slideInRight 0.8s ease-out 0.4s backwards;
+        }
+        
+        .quick-issues-scroll { flex: 1; overflow: hidden; position: relative; }
+        
+        .quick-issues-wrapper { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 8px; 
+            animation: scroll-up 90s linear infinite;
+        }
+        
+        @keyframes scroll-up { 
+            0% { transform: translateY(0); } 
+            100% { transform: translateY(-50%); } 
+        }
+        
+        .quick-issues-scroll:hover .quick-issues-wrapper { animation-play-state: paused; }
+        
+        .quick-issue-card { 
+            background: white; 
+            border-radius: 15px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            flex-shrink: 0;
+        }
+        
+        @keyframes cardSlideIn {
+            from { transform: translateX(-30px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .quick-issue-card:hover { 
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 147, 233, 0.3);
+        }
+        
+        .quick-issue-image { 
+            width: 100%; 
+            height: 150px; 
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+        
+        .quick-issue-card:hover .quick-issue-image {
+            transform: scale(1.1);
+        }
+        
+        .quick-issue-header { 
+            padding: 6px 8px 5px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            gap: 6px; 
+        }
+        
+        .quick-issue-label { 
+            color: #0093E9; 
+            font-weight: 700; 
+            font-size: 15px; 
+            flex: 1; 
+            line-height: 1.3;
+            transition: color 0.3s ease;
+            /* Limit to 1 line with ellipsis */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .quick-issue-card:hover .quick-issue-label {
+            color: #00d4ff;
+        }
+        
+        .priority-badge { 
+            padding: 3px 7px; 
+            border-radius: 10px; 
+            font-size: 10px; 
+            font-weight: 700; 
+            text-transform: uppercase; 
+            white-space: nowrap;
+            transition: all 0.3s ease;
+        }
+        
+        .priority-badge:hover {
+            transform: scale(1.1);
+        }
+        
+        .priority-critical { background: #dc3545; color: white; box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4); }
+        .priority-high { background: #0093E9; color: white; box-shadow: 0 2px 8px rgba(0, 147, 233, 0.4); }
+        .priority-medium { background: #ffc107; color: #212529; box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4); }
+        
+        /* Chat Container */
+        .chat-container { 
+            display: flex; 
+            flex-direction: column; 
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            height: 100vh;
+            animation: slideInRight 0.6s ease-out;
+        }
+        
+        .chat-header { 
+            background: linear-gradient(135deg, rgba(0, 147, 233, 0.95) 0%, rgba(30, 60, 114, 0.95) 100%);
+            backdrop-filter: blur(15px);
+            color: white; 
+            padding: 18px 25px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 147, 233, 0.3);
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .chat-header h2 { 
+            font-size: 22px;
+            animation: slideInRight 0.8s ease-out 0.2s backwards;
+        }
+        
+        .header-buttons { 
+            display: flex; 
+            gap: 10px;
+            animation: slideInRight 0.8s ease-out 0.3s backwards;
+        }
+        
+        .reset-btn, .rebuild-btn { 
+            padding: 8px 18px; 
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 25px; 
+            color: white; 
+            cursor: pointer; 
+            font-size: 13px; 
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .reset-btn:hover, .rebuild-btn:hover { 
+            background: rgba(255, 255, 255, 0.95);
+            color: #0093E9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 147, 233, 0.4);
+        }
+        
+        .reset-btn:active, .rebuild-btn:active {
+            transform: translateY(0);
+        }
+        
+        .stop-speaking-btn { 
+            padding: 8px 18px; 
+            background: rgba(220, 53, 69, 0.9); 
+            border: 2px solid white; 
+            border-radius: 25px; 
+            color: white; 
+            cursor: pointer; 
+            font-size: 13px; 
+            font-weight: 600; 
+            display: none;
+            transition: all 0.3s ease;
+        }
+        
+        .stop-speaking-btn.visible { 
+            display: block;
+            animation: bounceIn 0.5s ease-out;
+        }
+        
+        .stop-speaking-btn:hover {
+            background: rgba(220, 53, 69, 1);
+            transform: scale(1.05);
+        }
+        
+        .streaming-indicator { 
+            display: none; 
+            padding: 3px 8px; 
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 8px; 
+            font-size: 15px; 
+            margin-left: 8px;
+        }
+        
+        .streaming-indicator.visible { 
+            display: inline-block; 
+            animation: blinkGlow 1.5s infinite;
+        }
+        
+        @keyframes blinkGlow { 
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(0, 212, 255, 0.5); }
+            50% { opacity: 0.4; box-shadow: 0 0 5px rgba(0, 212, 255, 0.2); }
+        }
+        
+        .messages-container { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 20px 25px 100px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 15px;
+        }
+        
+        .messages-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .messages-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+        
+        .messages-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #0093E9, #80D0C7);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .messages-container::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #0093E9, #00d4ff);
+        }
+        
+        .message { 
+            display: flex; 
+            gap: 12px; 
+            animation: messageSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes messageSlideIn { 
+            from { opacity: 0; transform: translateY(20px) scale(0.95); } 
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .message.user { flex-direction: row-reverse; }
+        
+        .message-avatar { 
+            width: 44px; 
+            height: 44px; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 22px; 
+            flex-shrink: 0; 
+            box-shadow: 0 4px 15px rgba(0, 147, 233, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .message-avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .message.bot .message-avatar { 
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            animation: avatarPop 0.6s ease-out;
+        }
+        
+        @keyframes avatarPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .message.user .message-avatar { 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: avatarPop 0.6s ease-out;
+        }
+        
+        .message-content { 
+            max-width: 70%; 
+            padding: 12px 16px; 
+            border-radius: 15px; 
+            line-height: 1.5;
+            transition: all 0.3s ease;
+        }
+        
+        .message-content:hover {
+            transform: translateY(-2px);
+        }
+        
+        .message.bot .message-content { 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(0, 147, 233, 0.2);
+            box-shadow: 0 4px 15px rgba(0, 147, 233, 0.1);
+        }
+        
+        .message.user .message-content { 
+            background: linear-gradient(135deg, rgba(0, 147, 233, 0.9) 0%, rgba(128, 208, 199, 0.9) 100%);
+            backdrop-filter: blur(10px);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 147, 233, 0.3);
+        }
+        
+        .message-time { 
+            font-size: 10px; 
+            opacity: 0.7; 
+            margin-top: 5px; 
+            font-style: italic;
+        }
+
+        /* Ocean Blue Loading Dots */
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+            padding: 10px 0;
+            align-items: center;
+            color: #0093E9;
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .loading-dots .dot {
+            width: 10px;
+            height: 10px;
+            background: linear-gradient(135deg, #0093E9, #00d4ff);
+            border-radius: 50%;
+            animation: oceanBounce 1.35s infinite ease-in-out;
+            box-shadow: 0 2px 10px rgba(0, 147, 233, 0.6);
+        }
+        
+        .loading-dots .dot:nth-child(2) { animation-delay: 0.15s; }
+        .loading-dots .dot:nth-child(3) { animation-delay: 0.30s; }
+        
+        @keyframes oceanBounce {
+            0%, 60%, 100% {
+                transform: translateY(0) scale(1);
+                opacity: 0.75;
+            }
+            30% {
+                transform: translateY(-12px) scale(1.15);
+                opacity: 1;
+                box-shadow: 0 4px 15px rgba(0, 212, 255, 0.8);
+            }
+        }
+
+        /* Enhanced Processing States */
+        .processing-card {
+            background: linear-gradient(135deg, rgba(0, 147, 233, 0.95) 0%, rgba(128, 208, 199, 0.95) 100%);
+            backdrop-filter: blur(15px);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 8px 25px rgba(0, 147, 233, 0.4);
+            animation: processingSlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @keyframes processingSlideIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        
+        .processing-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .processing-icon {
+            font-size: 24px;
+            animation: spin 2s linear infinite;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .processing-icon.recording {
+            animation: recordingPulse 1.5s ease-in-out infinite;
+        }
+        
+        @keyframes recordingPulse {
+            0%, 100% { transform: scale(1); opacity: 1; filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)); }
+            50% { transform: scale(1.3); opacity: 0.7; filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8)); }
+        }
+        
+        .processing-stages {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-left: 36px;
+        }
+        
+        .processing-stage {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            opacity: 0.7;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .processing-stage.active {
+            opacity: 1;
+            font-weight: 600;
+            transform: translateX(8px);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        .processing-stage.completed {
+            opacity: 0.5;
+            transform: translateX(0);
+        }
+        
+        .stage-icon { 
+            font-size: 16px;
+            transition: transform 0.3s ease;
+        }
+        
+        .processing-stage.active .stage-icon {
+            transform: scale(1.2);
+        }
+        
+        .stage-spinner {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #fff 0%, rgba(255, 255, 255, 0.8) 50%, #00d4ff 100%);
+            background-size: 200% 100%;
+            border-radius: 3px;
+            transition: width 0.4s ease;
+            animation: shimmer 2s linear infinite;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Input Container */
+        .input-container { 
+            padding: 15px 25px; 
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(0, 147, 233, 0.2);
+            box-shadow: 0 -5px 25px rgba(0, 147, 233, 0.15);
+            animation: slideUp 0.6s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .input-wrapper { 
+            display: flex; 
+            gap: 12px; 
+            align-items: center;
+        }
+        
+        .input-field { 
+            flex: 1; 
+            padding: 15px 20px; 
+            border: 2px solid rgba(0, 147, 233, 0.3);
+            border-radius: 30px; 
+            font-size: 15px; 
+            outline: none; 
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .input-field:focus { 
+            border-color: #0093E9;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 20px rgba(0, 147, 233, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .voice-btn, .image-btn, .ocr-btn, .send-btn { 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            border: none; 
+            color: white; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 22px; 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .voice-btn { 
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            animation: buttonPop 0.6s ease-out 0.8s backwards;
+        }
+        
+        @keyframes buttonPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .voice-btn.recording { 
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            animation: pulseRed 1s infinite;
+        }
+        
+        @keyframes pulseRed { 
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4); }
+            50% { transform: scale(1.15); box-shadow: 0 4px 25px rgba(220, 53, 69, 0.6); }
+        }
+        
+        .image-btn { 
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            animation: buttonPop 0.6s ease-out 0.9s backwards;
+        }
+        
+        .ocr-btn { 
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            animation: buttonPop 0.6s ease-out 1s backwards;
+        }
+        
+        .send-btn { 
+            background: linear-gradient(135deg, #0093E9 0%, #80D0C7 100%);
+            animation: buttonPop 0.6s ease-out 1.1s backwards;
+        }
+        
+        .voice-btn:hover, .image-btn:hover, .ocr-btn:hover, .send-btn:hover { 
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 6px 25px rgba(0, 147, 233, 0.5);
+        }
+        
+        .voice-btn:active, .image-btn:active, .ocr-btn:active, .send-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .send-btn:disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            transform: scale(1);
+        }
+        
+        .loading-message { 
+            text-align: center; 
+            color: white; 
+            padding: 20px; 
+            font-size: 13px;
+            animation: fadeIn 1s ease-out;
+        }
+        
+        @media (max-width: 768px) { 
+            .container { grid-template-columns: 1fr; } 
+            .sidebar { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="45" height="45" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- ATM Machine body -->
+                        <rect x="3" y="2" width="18" height="20" rx="2" fill="url(#pinkGradient)" stroke="#ff1493" stroke-width="1.2"/>
+                        
+                        <!-- Screen -->
+                        <rect x="5" y="4" width="14" height="9" rx="0.5" fill="#ffffff" opacity="0.9"/>
+                        
+                        <!-- ATM Text on screen -->
+                        <text x="12" y="9.5" font-family="Arial, sans-serif" font-size="3.5" font-weight="bold" fill="#ff1493" text-anchor="middle">ATM</text>
+                        
+                        <!-- Keypad area -->
+                        <rect x="6" y="14" width="12" height="5" rx="0.3" fill="#ffffff" opacity="0.3"/>
+                        
+                        <!-- Keypad dots (buttons) -->
+                        <circle cx="8" cy="15.5" r="0.4" fill="#ffffff"/>
+                        <circle cx="10" cy="15.5" r="0.4" fill="#ffffff"/>
+                        <circle cx="12" cy="15.5" r="0.4" fill="#ffffff"/>
+                        <circle cx="14" cy="15.5" r="0.4" fill="#ffffff"/>
+                        <circle cx="16" cy="15.5" r="0.4" fill="#ffffff"/>
+                        
+                        <circle cx="8" cy="17" r="0.4" fill="#ffffff"/>
+                        <circle cx="10" cy="17" r="0.4" fill="#ffffff"/>
+                        <circle cx="12" cy="17" r="0.4" fill="#ffffff"/>
+                        <circle cx="14" cy="17" r="0.4" fill="#ffffff"/>
+                        <circle cx="16" cy="17" r="0.4" fill="#ffffff"/>
+                        
+                        <!-- Card slot (the dot at bottom) -->
+                        <rect x="9" y="20" width="6" height="1.2" rx="0.3" fill="#ffffff" opacity="0.8"/>
+                        <circle cx="12" cy="20.6" r="0.5" fill="#ffffff"/>
+                        
+                        <defs>
+                            <linearGradient id="pinkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#ff1493;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#ff69b4;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#ff1493;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <h1>RAG ATM Support</h1>
+                    <p>AI-Powered Technical Assistant</p>
+                </div>
+            </div>
+            <div class="status-box">
+                <div class="status-header">
+                    <div class="brain-icon">🧠</div>
+                    <div>
+                        <div class="status-title">System & RAG Status</div>
+                        <div class="status-text" id="statusText">Connecting...</div>
+                    </div>
+                </div>
+                <div class="rag-details-row">
+                    <div class="rag-status-item">
+                        <span>Status:</span>
+                        <span id="ragStatus"><span class="rag-badge disabled">Loading...</span></span>
+                    </div>
+                    <div class="rag-status-item">
+                        <span>Sessions:</span>
+                        <span id="activeSessions">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="quick-issues">
+                <h3>⚡ Common Issues (<span id="issueCount">0</span>)</h3>
+                <div class="quick-issues-scroll">
+                    <div class="quick-issues-wrapper" id="quickIssuesWrapper">
+                        <div class="loading-message">Loading issues...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="chat-header">
+                <h2>💬 RAG-Powered Chat <span id="streamingBadge" class="streaming-indicator">⚡ Streaming...</span></h2>
+                <div class="header-buttons">
+                    <button class="stop-speaking-btn" id="stopSpeakingBtn" onclick="stopSpeaking()">🔇 Stop</button>
+                    <button class="rebuild-btn" onclick="rebuildRAG()">🔄 Rebuild RAG</button>
+                    <button class="reset-btn" onclick="resetChat()">🗑️ Reset Chat</button>
+                </div>
+            </div>
+
+            <div class="messages-container" id="messagesContainer">
+                <div class="message bot">
+                    <div class="message-avatar">🤖</div>
+                    <div class="message-content">
+                        <div>👋 <strong>Welcome to ATM Support Assistant!</strong><br><br>
+                        I can help you with:<br>
+                        💡 <strong>30+ Common Issues</strong> - Click any issue card for instant solutions<br>
+                        🎤 <strong>Voice Input</strong> - Speak your question (powered by Whisper AI)<br>
+                        📄 <strong>Document OCR</strong> - Upload PDFs or clear images for text extraction<br>
+                        📸 <strong>Image Analysis</strong> - Send unclear/complex images (analyzed by LLaVA Vision AI)<br><br>
+                        <strong>Click any issue card below</strong> or type/speak your question to get started!</div>
+                        <div class="message-time" id="initialTime"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <button class="voice-btn" id="voiceBtn" onclick="toggleVoiceRecording()" title="Voice (Whisper)">🎤</button>
+                    <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
+                    <button class="image-btn" onclick="document.getElementById('imageInput').click()" title="Screenshot (LLaVA)">📸</button>
+                    <input type="file" id="fileInput" accept="image/*,.pdf" style="display:none;" onchange="handleFileUpload(event)">
+                    <button class="ocr-btn" onclick="document.getElementById('fileInput').click()" title="PDF/Doc (OCR)">📄</button>
+                    <input type="text" class="input-field" id="messageInput" placeholder="Ask about ATM issues... (RAG-powered search) 🔍" onkeypress="handleKeyPress(event)" autocomplete="off">
+                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:5000';
+        const WS_URL = 'ws://localhost:5000/ws/chat/';
+        const COMMON_ISSUES_URL = API_BASE + '/api/common-issues';
+        let ws = null;
+        let userId = 'user_' + Math.random().toString(36).substr(2, 9);
+        let isConnected = false;
+        let currentStreamingMessage = null;
+        let reconnectAttempts = 0;
+        let mediaRecorder, audioChunks = [], isRecording = false;
+        let isSpeaking = false;
+        let currentUtterance = null;
+        let allIssues = [];
+        let currentProcessingCard = null;
+        const MAX_RECONNECT_ATTEMPTS = 5;
+
+        const issueImages = [
+            'https://images.unsplash.com/photo-1580519542036-c47de6196ba5?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1556742111-a301076d9d18?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1556742044-3c52d6e88c62?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1579621970795-87facc2f976d?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1563986768711-b3bde3dc821e?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=400&h=300&fit=crop',
+            'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=400&h=300&fit=crop'
+        ];
+
+        const categoryEmojis = {
+            'Cash Dispensing': '💵', 'Card Issues': '💳', 'Printer Issues': '🖨️', 'Network': '🌐',
+            'Display': '📱', 'Security': '🔒', 'Cash Management': '💰', 'Power': '⚡', 'Software': '💻'
+        };
+
+        // ────────────────────────────────────────────────
+        // Processing card functions
+        // ────────────────────────────────────────────────
+
+        function createProcessingCard(type, stages) {
+            const container = document.getElementById('messagesContainer');
+            const card = document.createElement('div');
+            card.className = 'message user';
+            
+            const iconClass = type === 'audio' ? 'recording' : '';
+            const icon = type === 'audio' ? '🎤' : '📸';
+            const title = type === 'audio' ? 'Recording Audio' : 'Processing Image';
+            
+            const stagesHtml = stages.map((stage, idx) => `
+                <div class="processing-stage" data-stage="${idx}">
+                    <span class="stage-icon">${stage.icon}</span>
+                    <span>${stage.text}</span>
+                    <span class="stage-spinner" style="display:none;"></span>
+                </div>
+            `).join('');
+            
+            card.innerHTML = `
+                <div class="message-avatar">👤</div>
+                <div class="message-content" style="max-width: 80%;">
+                    <div class="processing-card">
+                        <div class="processing-header">
+                            <span class="processing-icon ${iconClass}">${icon}</span>
+                            <span>${title}</span>
+                        </div>
+                        <div class="processing-stages">
+                            ${stagesHtml}
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            
+            container.appendChild(card);
+            scrollToBottom();
+            currentProcessingCard = card;
+            return card;
+        }
+
+        function updateProcessingStage(stageIndex, progress) {
+            if (!currentProcessingCard) return;
+            
+            const stages = currentProcessingCard.querySelectorAll('.processing-stage');
+            const progressBar = currentProcessingCard.querySelector('.progress-bar');
+            
+            stages.forEach((stage, idx) => {
+                const spinner = stage.querySelector('.stage-spinner');
+                if (idx < stageIndex) {
+                    stage.classList.remove('active');
+                    stage.classList.add('completed');
+                    if (spinner) spinner.style.display = 'none';
+                } else if (idx === stageIndex) {
+                    stage.classList.add('active');
+                    stage.classList.remove('completed');
+                    if (spinner) spinner.style.display = 'inline-block';
+                } else {
+                    stage.classList.remove('active', 'completed');
+                    if (spinner) spinner.style.display = 'none';
+                }
+            });
+            
+            if (progressBar) {
+                progressBar.style.width = `${progress}%`;
+            }
+        }
+
+        function completeProcessingCard() {
+            if (!currentProcessingCard) return;
+            
+            const stages = currentProcessingCard.querySelectorAll('.processing-stage');
+            stages.forEach(stage => {
+                stage.classList.add('completed');
+                stage.classList.remove('active');
+                const spinner = stage.querySelector('.stage-spinner');
+                if (spinner) spinner.style.display = 'none';
+            });
+            
+            const progressBar = currentProcessingCard.querySelector('.progress-bar');
+            if (progressBar) progressBar.style.width = '100%';
+            
+            currentProcessingCard = null;
+        }
+
+        function addResultMessage(title, content) {
+            const container = document.getElementById('messagesContainer');
+            const div = document.createElement('div');
+            div.className = 'message user';
+            
+            let formatted = content
+                .replace(/(\d+)\.\s*/g, '<br><strong>$1.</strong> ')
+                .replace(/-\s+/g, '<br>• ')
+                .replace(/\n/g, '<br>')
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/^(<br>\s*)+/, '')
+                .replace(/(<br>\s*){3,}/g, '<br><br>');
+            
+            div.innerHTML = `
+                <div class="message-avatar">👤</div>
+                <div class="message-content" style="max-width: 80%;">
+                    <div class="processing-card">
+                        <div class="processing-header">
+                            <span class="processing-icon">🔍</span>
+                            <span>${title}</span>
+                        </div>
+                        <div style="margin-top: 12px; padding: 12px; background: rgba(255,255,255,0.15); border-radius: 8px; font-size: 13px; line-height: 2.0; word-break: break-word;">
+                            ${formatted}
+                        </div>
+                    </div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            
+            container.appendChild(div);
+            scrollToBottom();
+            return div;
+        }
+
+        function transformProcessingCardToCompleted(title, content) {
+            completeProcessingCard();
+            return addResultMessage(title, content);
+        }
+
+        function removeProcessingCard() {
+            if (currentProcessingCard && currentProcessingCard.parentElement) {
+                currentProcessingCard.remove();
+                currentProcessingCard = null;
+            }
+        }
+
+        // ────────────────────────────────────────────────
+        // Other functions (unchanged except getCurrentTime)
+        // ────────────────────────────────────────────────
+
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('en-IN', {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            }).replace(/AM|PM/, m => m.toLowerCase());
+        }
+
+        async function loadCommonIssues() {
+            try {
+                const res = await fetch(COMMON_ISSUES_URL);
+                const data = await res.json();
+                if (data.success && data.issues) {
+                    allIssues = data.issues;
+                    document.getElementById('issueCount').textContent = allIssues.length;
+                    renderIssueCards();
+                }
+            } catch (e) {
+                console.error('Error loading issues:', e);
+            }
+        }
+
+        function renderIssueCards() {
+            const wrapper = document.getElementById('quickIssuesWrapper');
+            const html = allIssues.map((issue, i) => {
+                const emoji = categoryEmojis[issue.category] || '🔧';
+                const img = issueImages[i % issueImages.length];
+                return `
+                    <div class="quick-issue-card" onclick="sendQuickIssue('${issue.issue.replace(/'/g, "\\'")}')">
+                        <img src="${img}" alt="${issue.issue}" class="quick-issue-image">
+                        <div class="quick-issue-header">
+                            <div class="quick-issue-label">${emoji} ${issue.issue}</div>
+                            <div class="priority-badge priority-${issue.priority}">${issue.priority}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            wrapper.innerHTML = html + html;
+        }
+
+        async function checkHealth() {
+            try {
+                const res = await fetch(API_BASE + '/health');
+                const data = await res.json();
+                document.getElementById('ragStatus').innerHTML = data.ollama === 'connected'
+                    ? '<span class="rag-badge">✓ Enabled</span>'
+                    : '<span class="rag-badge disabled">✗ Offline</span>';
+                document.getElementById('activeSessions').textContent = data.sessions || 0;
+            } catch (e) {
+                console.error('Health check failed:', e);
+            }
+        }
+
+        async function rebuildRAG() {
+            if (!confirm('Rebuild RAG?')) return;
+            addMessage('🔄 Rebuilding...', false);
+            try {
+                const res = await fetch(API_BASE + '/rebuild-rag', { method: 'POST' });
+                const data = await res.json();
+                addMessage(data.success ? `✅ Done! ${data.sessions_updated || 0} updated` : `❌ Failed: ${data.message}`, false);
+            } catch (e) {
+                addMessage('❌ Error: ' + e.message, false);
+            }
+        }
+
+        function initWebSocket() {
+            if (ws && (ws.readyState === WebSocket.CONNECTING || ws.readyState === WebSocket.OPEN)) return;
+            ws = new WebSocket(WS_URL + userId);
+            ws.onopen = () => {
+                isConnected = true;
+                reconnectAttempts = 0;
+                updateConnectionStatus(true);
+                checkHealth();
+            };
+            ws.onmessage = (event) => {
+                try {
+                    handleWebSocketMessage(JSON.parse(event.data));
+                } catch (e) {
+                    console.error('Parse error:', e);
+                }
+            };
+            ws.onclose = () => {
+                isConnected = false;
+                updateConnectionStatus(false);
+                if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                    setTimeout(() => {
+                        reconnectAttempts++;
+                        initWebSocket();
+                    }, 1000 * Math.pow(2, reconnectAttempts));
+                }
+            };
+        }
+
+        function handleWebSocketMessage(data) {
+            const { type, content } = data;
+            switch (type) {
+                case 'start':
+                    showStreamingIndicator(true);
+                    if (currentStreamingMessage) finalizeStreamingMessage(currentStreamingMessage.parentElement.parentElement);
+                    currentStreamingMessage = addStreamingMessage();
+                    break;
+                case 'stream':
+                    if (currentStreamingMessage) appendToStreamingMessage(content);
+                    break;
+                case 'done':
+                case 'complete':
+                    showStreamingIndicator(false);
+                    if (currentStreamingMessage) {
+                        finalizeStreamingMessage(currentStreamingMessage.parentElement.parentElement);
+                        currentStreamingMessage = null;
+                    }
+                    break;
+                case 'error':
+                    showStreamingIndicator(false);
+                    addMessage('❌ ' + content, false);
+                    currentStreamingMessage = null;
+                    break;
+            }
+        }
+
+        function addStreamingMessage() {
+            const container = document.getElementById('messagesContainer');
+            const div = document.createElement('div');
+            div.className = 'message bot';
+            div.innerHTML = `
+                <div class="message-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="streaming-content"></div>
+                    <div class="loading-dots">Generating<span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            container.appendChild(div);
+            scrollToBottom();
+            return div.querySelector('.streaming-content');
+        }
+
+        function appendToStreamingMessage(text) {
+            if (currentStreamingMessage) {
+                currentStreamingMessage.innerHTML += escapeHtml(text);
+                scrollToBottom();
+            }
+        }
+
+        function finalizeStreamingMessage(el) {
+            const dots = el.querySelector('.loading-dots');
+            if (dots) dots.remove();
+            const content = el.querySelector('.streaming-content');
+            if (content) {
+                let text = content.textContent || '';
+                let html = text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/(^|\n\n)(\d+)\.\s+/g, '$1<br><strong>$2.</strong> ')
+                    .replace(/(^|\n)-\s+/g, '$1<br>• ')
+                    .replace(/\n/g, '<br>')
+                    .replace(/(<br>\s*){3,}/g, '<br><br>')
+                    .replace(/^(<br>\s*)+/, '');
+                content.innerHTML = html;
+                speakText(text.replace(/\*\*(.*?)\*\*/g, '$1'));
+            }
+        }
+
+        function showStreamingIndicator(show) {
+            document.getElementById('streamingBadge').classList.toggle('visible', show);
+        }
+
+        function updateConnectionStatus(connected) {
+            document.getElementById('statusText').textContent = connected ? '⚡ RAG Streaming Active' : 'Disconnected';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const msg = input.value.trim();
+            if (!msg || !isConnected) return;
+            stopSpeaking();
+            addMessage(msg, true);
+            input.value = '';
+            try {
+                ws.send(JSON.stringify({ message: msg }));
+            } catch (e) {
+                addMessage('❌ Failed to send', false);
+            }
+        }
+
+        function sendQuickIssue(text) {
+            document.getElementById('messageInput').value = text;
+            sendMessage();
+        }
+
+        function addMessage(text, isUser = false, speak = false) {
+            const container = document.getElementById('messagesContainer');
+            const div = document.createElement('div');
+            div.className = `message ${isUser ? 'user' : 'bot'}`;
+            const avatar = isUser ? '👤' : '🤖';
+            const formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+            div.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <div>${formatted}</div>
+                    <div class="message-time">${getCurrentTime()}</div>
+                </div>
+            `;
+            container.appendChild(div);
+            scrollToBottom();
+            if (speak && !isUser) speakText(text);
+            return div;
+        }
+
+        function scrollToBottom() {
+            setTimeout(() => {
+                const container = document.getElementById('messagesContainer');
+                container.scrollTop = container.scrollHeight;
+            }, 50);
+        }
+
+        function speakText(text) {
+            if (isSpeaking) stopSpeaking();
+            if (!('speechSynthesis' in window)) return;
+            
+            // Create a temporary div to properly convert HTML to text
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = text;
+            let cleanText = tempDiv.textContent || tempDiv.innerText || '';
+            
+            // Additional cleaning
+            cleanText = cleanText
+                .replace(/\*\*(.*?)\*\*/g, '$1')  // Remove markdown bold
+                .replace(/<br\s*\/?>/gi, '. ')     // Replace <br> with pause
+                .replace(/<[^>]+>/g, '')           // Remove any remaining HTML tags
+                .replace(/\s+/g, ' ')              // Normalize whitespace
+                .replace(/\.\s*\./g, '.')          // Remove double periods
+                .trim();
+            
+            const utterance = new SpeechSynthesisUtterance(cleanText);
+            utterance.onstart = () => {
+                isSpeaking = true;
+                document.getElementById('stopSpeakingBtn').classList.add('visible');
+            };
+            utterance.onend = utterance.onerror = () => {
+                isSpeaking = false;
+                document.getElementById('stopSpeakingBtn').classList.remove('visible');
+                currentUtterance = null;
+            };
+            currentUtterance = utterance;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function stopSpeaking() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                document.getElementById('stopSpeakingBtn').classList.remove('visible');
+                currentUtterance = null;
+            }
+        }
+
+        async function toggleVoiceRecording() {
+            if (isRecording) stopRecording();
+            else startRecording();
+        }
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+                mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+                mediaRecorder.onstop = async () => {
+                    const blob = new Blob(audioChunks, { type: 'audio/wav' });
+                    await sendVoiceMessage(blob);
+                    stream.getTracks().forEach(t => t.stop());
+                };
+                mediaRecorder.start();
+                isRecording = true;
+                const btn = document.getElementById('voiceBtn');
+                btn.classList.add('recording');
+                btn.innerHTML = '⏹️';
+                
+                createProcessingCard('audio', [
+                    { icon: '🎤', text: 'Recording audio...' },
+                    { icon: '📤', text: 'Uploading to server' },
+                    { icon: '🔊', text: 'Transcribing with Whisper' },
+                    { icon: '🤖', text: 'Generating response' }
+                ]);
+                updateProcessingStage(0, 25);
+            } catch (e) {
+                console.error('Mic error:', e);
+                alert('Microphone access denied or not available');
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && isRecording) {
+                mediaRecorder.stop();
+                isRecording = false;
+                const btn = document.getElementById('voiceBtn');
+                btn.classList.remove('recording');
+                btn.innerHTML = '🎤';
+            }
+        }
+
+        async function sendVoiceMessage(blob) {
+            const base64 = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+            });
+            const wsVoice = new WebSocket(`ws://localhost:5000/ws/voice/${userId}`);
+            wsVoice.onopen = () => {
+                updateProcessingStage(1, 50);
+                wsVoice.send(JSON.stringify({ type: 'audio_upload', audio_data: base64 }));
+            };
+            wsVoice.onmessage = event => {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'status' && data.stage === 'transcribing') {
+                    updateProcessingStage(2, 75);
+                } else if (data.type === 'transcribed' || data.type === 'response_start') {
+                    updateProcessingStage(3, 90);
+                    completeProcessingCard();
+                    addResultMessage('🎤 Audio Transcribed', `"${data.transcribed_text}"`);
+                } else if (data.type === 'stream') {
+                    if (!currentStreamingMessage) currentStreamingMessage = addStreamingMessage();
+                    appendToStreamingMessage(data.content);
+                } else if (data.type === 'done') {
+                    if (currentStreamingMessage) {
+                        finalizeStreamingMessage(currentStreamingMessage.parentElement.parentElement);
+                        currentStreamingMessage = null;
+                    }
+                    wsVoice.close();
+                } else if (data.type === 'error') {
+                    if (currentProcessingCard) {
+                        completeProcessingCard();
+                        addResultMessage('❌ Audio Processing Error', data.message);
+                    }
+                    wsVoice.close();
+                }
+            };
+            wsVoice.onerror = () => {
+                if (currentProcessingCard) {
+                    completeProcessingCard();
+                    addResultMessage('❌ Connection Error', 'Voice WebSocket error');
+                }
+                wsVoice.close();
+            };
+        }
+
+        async function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith('image/')) {
+                addMessage('❌ Please select an image only', false);
+                event.target.value = '';
+                return;
+            }
+            stopSpeaking();
+            const base64 = await new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+            const wsImage = new WebSocket(`ws://localhost:5000/ws/image-upload/${userId}`);
+            
+            createProcessingCard('image', [
+                { icon: '📤', text: 'Uploading image...' },
+                { icon: '🔍', text: 'Analyzing with LLaVA' },
+                { icon: '📊', text: 'Extracting information' },
+                { icon: '🤖', text: 'Generating response' }
+            ]);
+            updateProcessingStage(0, 25);
+            wsImage.onopen = () => {
+                wsImage.send(JSON.stringify({
+                    type: 'image_upload',
+                    image_data: base64,
+                    filename: file.name
+                }));
+                updateProcessingStage(1, 50);
+            };
+            wsImage.onmessage = event => {
+                const data = JSON.parse(event.data);
+                
+                switch(data.type) {
+                    case 'status':
+                        if (data.message.includes('Analyzing')) updateProcessingStage(1, 50);
+                        else if (data.message.includes('Processing')) updateProcessingStage(2, 75);
+                        break;
+                    case 'analysis_result':
+                        updateProcessingStage(2, 85);
+                        completeProcessingCard();
+                        const preview = data.content.length > 300 ? data.content.substring(0, 300) + '...' : data.content;
+                        addResultMessage('🔍 Image Analysis Result', preview);
+                        break;
+                    case 'start':
+                        updateProcessingStage(3, 90);
+                        if (currentStreamingMessage) finalizeStreamingMessage(currentStreamingMessage.parentElement.parentElement);
+                        currentStreamingMessage = addStreamingMessage();
+                        showStreamingIndicator(true);
+                        break;
+                    case 'stream':
+                        if (currentStreamingMessage) appendToStreamingMessage(data.content);
+                        break;
+                    case 'done':
+                        showStreamingIndicator(false);
+                        if (currentStreamingMessage) {
+                            finalizeStreamingMessage(currentStreamingMessage.parentElement.parentElement);
+                            currentStreamingMessage = null;
+                        }
+                        wsImage.close();
+                        break;
+                    case 'error':
+                        if (currentProcessingCard) {
+                            completeProcessingCard();
+                            addResultMessage('❌ Image Processing Error', data.message);
+                        }
+                        wsImage.close();
+                        break;
+                }
+            };
+            wsImage.onerror = () => {
+                if (currentProcessingCard) {
+                    completeProcessingCard();
+                    addResultMessage('❌ Connection Error', 'Image WebSocket error. Please try again.');
+                }
+                wsImage.close();
+            };
+            wsImage.onclose = () => {
+                if (currentStreamingMessage) {
+                    finalizeStreamingMessage(currentStreamingMessage.parentElement.parentElement);
+                    currentStreamingMessage = null;
+                }
+                showStreamingIndicator(false);
+            };
+            event.target.value = '';
+        }
+
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            addMessage(`📄 ${file.name}...`, true);
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('user_id', userId);
+            try {
+                const res = await fetch(API_BASE + '/ocr-upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await res.json();
+                if (data.success && data.extracted_text) {
+                    addMessage(`📄 "${data.extracted_text.substring(0, 200)}..."`, true);
+                    if (data.response) addMessage(data.response, false, true);
+                } else if (data.warning) {
+                    addMessage(`⚠️ ${data.warning}`, true);
+                } else {
+                    addMessage('❌ ' + (data.error || 'OCR failed'), false);
+                }
+            } catch (e) {
+                addMessage('❌ OCR failed', false);
+            }
+            event.target.value = '';
+        }
+
+        async function resetChat() {
+            stopSpeaking();
+            removeProcessingCard();
+            try {
+                await fetch(API_BASE + '/reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user_id: userId })
+                });
+                document.getElementById('messagesContainer').innerHTML = `
+                    <div class="message bot">
+                        <div class="message-avatar">🤖</div>
+                        <div class="message-content">
+                            <div>👋 <strong>Chat reset!</strong> Ready to help.</div>
+                            <div class="message-time">${getCurrentTime()}</div>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('messageInput').focus();
+            } catch (e) {
+                console.error('Reset failed:', e);
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        document.getElementById('initialTime').textContent = getCurrentTime();
+        loadCommonIssues();
+        initWebSocket();
+        setTimeout(() => document.getElementById('messageInput').focus(), 500);
+    </script>
+</body>
+</html>

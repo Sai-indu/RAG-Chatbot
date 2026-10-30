@@ -1,0 +1,312 @@
+{
+  "department": "ATM",
+  "common_issues": [
+    {
+      "id": 1,
+      "category": "Cash Dispensing",
+      "issue": "ATM not dispensing cash",
+      "symptoms": ["Cash not coming out", "Transaction approved but no cash", "Dispenser error"],
+      "solution": "1. Check if ATM shows 'Out of Service'\n2. Verify cash cassette has notes\n3. Check for paper jam in dispenser\n4. Restart ATM if safe to do so\n5. If unresolved, contact ATM maintenance team",
+      "error_codes": ["E001", "E015"],
+      "priority": "high"
+    },
+    {
+      "id": 2,
+      "category": "Card Issues",
+      "issue": "Card stuck in ATM",
+      "symptoms": ["Card not ejecting", "Card reader malfunction", "Card retention"],
+      "solution": "1. DO NOT force the card out\n2. Note the ATM ID from screen\n3. Contact customer immediately\n4. Log incident in system\n5. Call technical team for card retrieval\n6. Fill card retention form",
+      "error_codes": ["E102", "E103"],
+      "priority": "critical"
+    },
+    {
+      "id": 3,
+      "category": "Printer Issues",
+      "issue": "Receipt not printing",
+      "symptoms": ["No receipt output", "Blank receipt", "Printer offline"],
+      "solution": "1. Check paper roll installation\n2. Look for paper jams\n3. Verify printer connectivity\n4. Replace paper roll if empty\n5. Clean printer head if streaky prints\n6. Log maintenance request if hardware issue",
+      "error_codes": ["E201", "E202"],
+      "priority": "medium"
+    },
+    {
+      "id": 4,
+      "category": "Network",
+      "issue": "Network connection failed",
+      "symptoms": ["Cannot connect", "Transaction timeout", "Network error"],
+      "solution": "1. Check network cable connections\n2. Verify router/switch status\n3. Test ping to server\n4. Restart ATM network module\n5. Check with network team for outages\n6. Switch to backup connection if available",
+      "error_codes": ["E301", "E302", "E310"],
+      "priority": "high"
+    },
+    {
+      "id": 5,
+      "category": "Display",
+      "issue": "Screen not responding to touch",
+      "symptoms": ["Touch not working", "Screen frozen", "Display malfunction"],
+      "solution": "1. Clean the screen surface\n2. Check for screen calibration issues\n3. Restart ATM system\n4. Test touch in diagnostics mode\n5. Replace touchscreen if hardware fault\n6. Contact technical support",
+      "error_codes": ["E401"],
+      "priority": "high"
+    },
+    {
+      "id": 6,
+      "category": "Cash Management",
+      "issue": "Cash cassette full",
+      "symptoms": ["Cannot accept deposits", "Cassette full warning", "Deposit rejected"],
+      "solution": "1. Check cassette capacity in system\n2. Schedule cash collection\n3. Disable deposit function if needed\n4. Notify cash management team\n5. Update ATM status in monitoring system",
+      "error_codes": ["E501"],
+      "priority": "medium"
+    },
+    {
+      "id": 7,
+      "category": "Cash Management",
+      "issue": "Cash low warning",
+      "symptoms": ["Low cash alert", "Limited denominations", "Running out of cash"],
+      "solution": "1. Check current cash levels in all cassettes\n2. Estimate remaining transactions possible\n3. Schedule urgent cash replenishment\n4. Notify cash operations team\n5. Consider limiting transaction amounts\n6. Update ATM status if critically low",
+      "error_codes": ["E502"],
+      "priority": "high"
+    },
+    {
+      "id": 8,
+      "category": "Security",
+      "issue": "Suspicious activity detected",
+      "symptoms": ["Skimming device found", "Camera tampering", "Unusual access attempts"],
+      "solution": "1. Immediately take ATM out of service\n2. Do not touch suspicious devices\n3. Call security team urgently\n4. Preserve evidence\n5. Review CCTV footage\n6. File security incident report\n7. Notify law enforcement if needed",
+      "error_codes": ["E601"],
+      "priority": "critical"
+    },
+    {
+      "id": 9,
+      "category": "Cash Dispensing",
+      "issue": "Cash dispenser jam",
+      "symptoms": ["Bills stuck in dispenser", "Partial cash dispensed", "Jam error on screen"],
+      "solution": "1. Open dispenser carefully\n2. Remove jammed notes without forcing\n3. Check for poor quality or folded notes\n4. Clean dispenser sensors and rollers\n5. Ensure notes are loaded flat and properly\n6. Restart dispenser module\n7. If persistent, call technician for deeper inspection",
+      "error_codes": ["E011", "E012", "E016"],
+      "priority": "high"
+    },
+    {
+      "id": 10,
+      "category": "Power",
+      "issue": "Power failure or no power",
+      "symptoms": ["ATM completely off", "Screen blank", "No lights or response"],
+      "solution": "1. Check power cable and outlet\n2. Verify circuit breaker not tripped\n3. Test with another device in outlet\n4. Check UPS battery if equipped\n5. Inspect for power surges or shared circuits\n6. Restart ATM once power restored\n7. Log for potential electrician review",
+      "error_codes": ["E701", "E702"],
+      "priority": "critical"
+    },
+    {
+      "id": 11,
+      "category": "Software",
+      "issue": "Software glitch or freeze",
+      "symptoms": ["System frozen", "Error messages repeatedly", "Unexpected reboot"],
+      "solution": "1. Perform safe restart via supervisor menu\n2. Check for pending software updates\n3. Clear temporary errors in diagnostics\n4. Verify journal printer for logs\n5. If recurring, schedule remote or on-site update\n6. Contact vendor support for patch",
+      "error_codes": ["E801", "E802"],
+      "priority": "high"
+    },
+    {
+      "id": 12,
+      "category": "Deposit Issues",
+      "issue": "Deposit envelope or cash not accepted",
+      "symptoms": ["Deposit rejected", "Envelope jam", "Deposit module error"],
+      "solution": "1. Check for envelope jams in deposit slot\n2. Clean deposit sensors\n3. Verify escrow full or module status\n4. Test with standard envelope\n5. Clear any stuck items carefully\n6. If hardware fault, disable deposits and call technician",
+      "error_codes": ["E901", "E902"],
+      "priority": "medium"
+    },
+    {
+      "id": 13,
+      "category": "Sensor Issues",
+      "issue": "Sensor fault or dirty sensors",
+      "symptoms": ["False errors", "Intermittent dispensing issues", "Sensor blocked warning"],
+      "solution": "1. Enter diagnostics mode to test sensors\n2. Clean all sensors with compressed air or approved cloth\n3. Check for dust buildup or obstructions\n4. Recalibrate if option available\n5. Restart ATM\n6. Schedule preventive cleaning if frequent",
+      "error_codes": ["E101", "E111"],
+      "priority": "medium"
+    },
+    {
+      "id": 14,
+      "category": "Communication",
+      "issue": "Communication error with host",
+      "symptoms": ["Transaction declined due to comms", "Host timeout", "Unable to authorize"],
+      "solution": "1. Check phone line or network status\n2. Restart communication module\n3. Verify IP settings and firewall\n4. Test connectivity to host\n5. Check for carrier outages\n6. Switch to dial backup if available\n7. Escalate to network provider",
+      "error_codes": ["E311", "E312"],
+      "priority": "high"
+    },
+    {
+      "id": 15,
+      "category": "Vault/Security",
+      "issue": "Vault door or lock issue",
+      "symptoms": ["Vault not opening", "Lock error", "Safe door alarm"],
+      "solution": "1. Verify correct combination or key\n2. Check for lock battery low\n3. Inspect for tampering or misalignment\n4. Reset lock if possible\n5. Do not force open\n6. Contact certified safe technician immediately\n7. Log security incident",
+      "error_codes": ["E602", "E603"],
+      "priority": "critical"
+    },
+    {
+      "id": 16,
+      "category": "Printer Issues",
+      "issue": "Journal printer not working",
+      "symptoms": ["No internal logs printing", "Journal error", "Audit trail missing"],
+      "solution": "1. Check journal paper roll\n2. Clear any jams in journal printer\n3. Verify printer connection inside vault\n4. Replace paper or ribbon if needed\n5. Test print in supervisor mode\n6. If hardware fault, request technician for repair",
+      "error_codes": ["E203", "E204"],
+      "priority": "medium"
+    },
+    {
+      "id": 17,
+      "category": "Card Issues",
+      "issue": "Card reader not reading chip or magnetic stripe",
+      "symptoms": ["Card read error", "Chip error", "Unable to read card", "Insert card again"],
+      "solution": "1. Ask customer to clean card and retry\n2. Test with another card to isolate issue\n3. Clean card reader with approved cleaning card\n4. Check for debris in card slot\n5. Verify reader firmware is up to date\n6. If persistent, replace card reader module\n7. Disable chip reading temporarily if mag stripe works",
+      "error_codes": ["E104", "E105", "E106"],
+      "priority": "high"
+    },
+    {
+      "id": 18,
+      "category": "Environmental",
+      "issue": "Temperature or humidity issues",
+      "symptoms": ["Overheating warning", "Condensation inside ATM", "Climate control failure", "Fan not working"],
+      "solution": "1. Check ATM internal temperature via diagnostics\n2. Verify HVAC/cooling fans are operational\n3. Clean air filters and vents\n4. Ensure ATM not in direct sunlight\n5. Check ambient room temperature\n6. If overheating, power down to prevent damage\n7. Call HVAC technician if climate control failed",
+      "error_codes": ["E703", "E704"],
+      "priority": "high"
+    },
+    {
+      "id": 19,
+      "category": "Cash Dispensing",
+      "issue": "Wrong denomination dispensed",
+      "symptoms": ["Incorrect bills given", "Cassette mismatch", "Wrong currency type"],
+      "solution": "1. Immediately take ATM out of service\n2. Verify cassette configuration in system\n3. Check physical cassette labels vs system settings\n4. Review recent cash loading logs\n5. Reconcile cash counts\n6. Correct cassette assignment\n7. File discrepancy report\n8. Notify cash management and compliance team",
+      "error_codes": ["E503", "E504"],
+      "priority": "critical"
+    },
+    {
+      "id": 20,
+      "category": "Keypad Issues",
+      "issue": "PIN pad not working or unresponsive",
+      "symptoms": ["Keys not responding", "EPP error", "PIN entry failed", "Keypad malfunction"],
+      "solution": "1. Clean keypad surface gently\n2. Check for physical damage or stuck keys\n3. Test in diagnostics mode\n4. Verify EPP (Encrypted PIN Pad) connection\n5. Restart ATM\n6. Check for liquid damage\n7. If hardware fault, replace PIN pad immediately for security",
+      "error_codes": ["E402", "E403"],
+      "priority": "critical"
+    },
+    {
+      "id": 21,
+      "category": "Display",
+      "issue": "Screen display issues - blank, flickering, or distorted",
+      "symptoms": ["Blank screen", "Flickering display", "Lines on screen", "Dim display", "Color issues"],
+      "solution": "1. Check display cable connections\n2. Verify backlight is functioning\n3. Adjust brightness if too dim\n4. Check for loose connectors\n5. Test with diagnostic screen patterns\n6. If flickering persists, check power supply\n7. Replace display module if hardware fault",
+      "error_codes": ["E404", "E405"],
+      "priority": "high"
+    },
+    {
+      "id": 22,
+      "category": "Cash Management",
+      "issue": "Cash count discrepancy",
+      "symptoms": ["Cash mismatch", "Audit failure", "Reconciliation error", "Short or over cash"],
+      "solution": "1. Stop ATM operations immediately\n2. Perform manual cash count\n3. Review transaction journal and logs\n4. Check for double feeds or partial dispenses\n5. Verify cassette sensors are accurate\n6. Reconcile with system counts\n7. File variance report\n8. Investigate root cause before resuming operations",
+      "error_codes": ["E505", "E506"],
+      "priority": "critical"
+    },
+    {
+      "id": 23,
+      "category": "Software",
+      "issue": "Software update or patch failure",
+      "symptoms": ["Update failed", "Boot error after update", "System rollback", "Version mismatch"],
+      "solution": "1. Check error logs for update failure reason\n2. Verify sufficient disk space\n3. Attempt rollback to previous version\n4. Re-download update package\n5. Verify file integrity (checksums)\n6. Boot in safe mode if available\n7. Contact vendor support with error logs\n8. Schedule on-site visit if remote fix fails",
+      "error_codes": ["E803", "E804"],
+      "priority": "high"
+    },
+    {
+      "id": 24,
+      "category": "UPS/Battery",
+      "issue": "UPS or backup battery failure",
+      "symptoms": ["Battery low warning", "No backup power", "UPS alarm", "Battery not charging"],
+      "solution": "1. Check UPS status indicators\n2. Test UPS by unplugging ATM briefly\n3. Verify battery age (replace every 3-5 years)\n4. Check battery connections\n5. Replace battery if dead or swollen\n6. Ensure UPS is properly grounded\n7. Schedule regular UPS testing\n8. If critical location, arrange temporary power backup",
+      "error_codes": ["E705", "E706"],
+      "priority": "medium"
+    },
+    {
+      "id": 25,
+      "category": "Anti-Skimming",
+      "issue": "Anti-skimming device malfunction",
+      "symptoms": ["Skimming detector offline", "Jitter motor not working", "Protective shield error"],
+      "solution": "1. Test anti-skimming system in diagnostics\n2. Check jitter motor functionality\n3. Verify card reader protective covering intact\n4. Inspect for tampering or damage\n5. Test with known good card\n6. If device offline, increase physical monitoring\n7. Contact security vendor for repair\n8. Report to fraud prevention team",
+      "error_codes": ["E604", "E605"],
+      "priority": "high"
+    },
+    {
+      "id": 26,
+      "category": "Check Deposit",
+      "issue": "Check imaging or deposit module error",
+      "symptoms": ["Check not scanning", "Image quality poor", "Check deposit rejected", "Scanner offline"],
+      "solution": "1. Clean check scanner glass with approved cleaner\n2. Test with known good check\n3. Verify adequate lighting for imaging\n4. Check scanner connection and power\n5. Review image quality settings\n6. Clear any check jams\n7. Disable check deposit if critical issue\n8. Schedule imaging module maintenance",
+      "error_codes": ["E903", "E904"],
+      "priority": "medium"
+    },
+    {
+      "id": 27,
+      "category": "Alarm Systems",
+      "issue": "Alarm or security sensor triggered",
+      "symptoms": ["Silent alarm activated", "Door sensor alert", "Motion detector triggered", "Vibration sensor alert"],
+      "solution": "1. DO NOT approach ATM alone if alarm active\n2. Contact security control room immediately\n3. Review CCTV footage remotely if possible\n4. Dispatch security personnel to location\n5. Verify if false alarm or genuine threat\n6. If false alarm, check sensor calibration\n7. Reset alarm only after area secured\n8. Log incident and review procedures",
+      "error_codes": ["E606", "E607"],
+      "priority": "critical"
+    },
+    {
+      "id": 28,
+      "category": "Cash Management",
+      "issue": "Note validator or authentication failure",
+      "symptoms": ["Notes rejected repeatedly", "Counterfeit detection error", "Validator malfunction"],
+      "solution": "1. Test with known genuine notes\n2. Clean note validator sensors\n3. Check validator firmware version\n4. Update counterfeit detection database\n5. Verify note specifications match validator settings\n6. If rejecting good notes, adjust sensitivity\n7. Replace validator if hardware fault\n8. Coordinate with cash operations on note quality",
+      "error_codes": ["E905", "E906"],
+      "priority": "medium"
+    },
+    {
+      "id": 29,
+      "category": "Accessibility",
+      "issue": "Audio assistance or accessibility features not working",
+      "symptoms": ["Headphone jack not working", "Audio guidance silent", "Braille not functioning"],
+      "solution": "1. Test headphone jack with known good headphones\n2. Check audio volume settings\n3. Verify audio files are not corrupted\n4. Test text-to-speech functionality\n5. Inspect Braille keypad for damage\n6. Review accessibility settings in configuration\n7. Contact vendor for specialized support\n8. Notify compliance team of accessibility issue",
+      "error_codes": ["E406", "E407"],
+      "priority": "medium"
+    },
+    {
+      "id": 30,
+      "category": "Remote Monitoring",
+      "issue": "Remote monitoring or management connection lost",
+      "symptoms": ["ATM offline in monitoring system", "Cannot connect remotely", "Management console timeout"],
+      "solution": "1. Verify ATM is powered on\n2. Check network connectivity to ATM\n3. Test VPN or secure connection\n4. Verify firewall rules not blocking\n5. Check monitoring agent software status\n6. Restart monitoring service\n7. Review remote access credentials\n8. If persistent, dispatch technician for on-site check",
+      "error_codes": ["E313", "E314"],
+      "priority": "medium"
+    }
+  ],
+  "smes": [
+    {
+      "name": "Rajesh Kumar",
+      "role": "ATM Technical Lead",
+      "email": "rajesh.kumar@hitachi-payments.com",
+      "phone": "+91-9876543210",
+      "expertise": ["Hardware Issues", "Network Problems", "Card Reader", "Dispenser Maintenance"]
+    },
+    {
+      "name": "Priya Sharma",
+      "role": "ATM Operations Manager",
+      "email": "priya.sharma@hitachi-payments.com",
+      "phone": "+91-9876543211",
+      "expertise": ["Cash Management", "Transaction Issues", "Operations", "Reconciliation"]
+    },
+    {
+      "name": "Amit Patel",
+      "role": "ATM Security Specialist",
+      "email": "amit.patel@hitachi-payments.com",
+      "phone": "+91-9876543212",
+      "expertise": ["Security Issues", "Fraud Prevention", "Physical Security", "Anti-Skimming"]
+    },
+    {
+      "name": "Sunita Reddy",
+      "role": "Software & Network Engineer",
+      "email": "sunita.reddy@hitachi-payments.com",
+      "phone": "+91-9876543213",
+      "expertise": ["Software Updates", "Network Configuration", "Remote Monitoring", "System Integration"]
+    },
+    {
+      "name": "Vikram Singh",
+      "role": "Cash Operations Coordinator",
+      "email": "vikram.singh@hitachi-payments.com",
+      "phone": "+91-9876543214",
+      "expertise": ["Cash Replenishment", "Cassette Management", "Denomination Planning", "Vault Operations"]
+    }
+  ]
+}
